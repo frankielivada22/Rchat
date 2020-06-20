@@ -64,6 +64,35 @@ function ncatinstalled()
 	fi
 }
 
+function changecolour()
+{
+	if [[ $message == "!colour" ]]; then
+		echo colors are "red, yellow, green, nc"
+		read -p "What colour: " colourpick
+
+		if [[ $colourpick == "red" ]]; then
+		 	echo -e $lred"set to red"
+		 else
+		 	echo colour not found
+		fi 
+		if [[ $colourpick == "yellow" ]]; then
+			echo -e $lyellow"set to yellow"
+		 else
+			echo colour not found
+		fi
+		if [[ $colourpick == "nc" ]]; then
+			echo -e $nc"set to plain colour"
+		 else
+			echo colour not found
+		fi
+		if [[ $colourpick == "green" ]]; then
+			echo -e $lgreen"set to green"
+		 else
+			echo colour not found
+		fi
+	fi
+}
+
 clear
 trap exitprogram EXIT
 checkroot
@@ -84,29 +113,59 @@ echo "e) exit"
 read -p "-->> " menu1
 if [[ $menu1 == "1" ]]; then
 	clear
-	echo -e $lgreen""
+	echo ""
 	clear
 	read -p "Enter chat ip or domain: " ipordomain
 	echo ""
 	read -p "Enter chat port: " port
 	echo ""
+	read -p "Is this chat room encrypted (y / n): " sslonornot
+
+	echo ""
 	echo "Connecting..."
 	echo ""
 
-	while :
-	do
-		echo $chatname Joined the chat $date | ncat $ipordomain $port
-		echo $chatname Joined the chat $date
-		echo Type something...
+	if [[ $sslonornot == "y" ]]; then
+		while :
+		do
+			echo $chatname Joined the chat $date | ncat $ipordomain $port --ssl
+			echo $chatname Joined the chat $date
+			echo Type something...
 		
-		echo -e $lgreen""
+			echo ""
 		
-		while true; do
-			read message
-			echo -e "$chatname: $message"
-		done | ncat $ipordomain $port
-	done
+			while true; do
+				read message
+				echo "$chatname: $message"
+
+				changecolour
+
+			done | ncat $ipordomain $port --ssl
+
+		done
+	elif [[ $sslonornot == "n" ]]; then
+			while :
+		do
+			echo $chatname Joined the chat $date | ncat $ipordomain $port
+			echo $chatname Joined the chat $date
+			echo Type something...
+		
+			echo ""
+		
+			while true; do
+				read message
+				echo "$chatname: $message"
+
+				changecolour
+
+			done | ncat $ipordomain $port
+
+		done
+	else
+		echo $lred"y or n / yes or no not ($sslonornot)"
+	fi
 fi
+
 if [[ $menu1 == "2" ]]; then
 	read -p "Enter chatname: " chatname
 	echo $chatname > chatname.txt
