@@ -64,7 +64,7 @@ goto :chatsettings
 echo %chatname% Joined the chat (%time%::%date%) | start /B ncat.exe %ipordomain% %port% --ssl
 echo %chatname% Joined the chat (%time%::%date%)
 echo Type something...
-:chatloop
+:chatloop1
 color a
 title Chatting...
 
@@ -75,7 +75,7 @@ echo %chatname%: %pmessage% | start /B ncat.exe %ipordomain% %port% --ssl
 set pmessage=
 timeout /t 2 /NOBREAK >nul
 
-goto :chatloop
+goto :chatloop1
 
 :startschatnossl
 echo %chatname% Joined the chat (%time%::%date%) | start /B ncat.exe %ipordomain% %port%
@@ -88,7 +88,7 @@ title Chatting...
 
 set /p pmessage=" " >nul
 
-echo %chatname%: %pmessage% >nul | start /B ncat.exe %ipordomain% %port%
+echo %chatname%: %pmessage% | start /B ncat.exe %ipordomain% %port% >nul
 
 set pmessage= >nul
 timeout /t 2 /NOBREAK >nul
