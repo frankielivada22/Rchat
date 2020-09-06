@@ -1,13 +1,15 @@
 #!/bin/bash
+#Colour
 lgreen="\e[92m"
 lred="\e[91m"
 nc="\e[39m"
 lyellow="\e[1;33m"
-chatname="$USER"
-date=$(date)
+chatname="$USER"	# Grabs users username
+date=$(date)	# Grabs computers time / date
 
 function exitprogram()
 {
+	# This function runs with the trap command and exits the script
 	echo ""
 	echo -e $lgreen"Aight bet..."
 	echo -e $lred"cya soon XD"
@@ -16,6 +18,7 @@ function exitprogram()
 
 function checkroot()
 {
+	# This function checks to see if the user is root or is running with root else exits the script
 	if [ $(id -u) != "0" ]; then
 		echo ""
 		echo You need to be root to run this script...
@@ -30,6 +33,7 @@ function checkroot()
 
 function ncatinstalled()
 {
+	# This function checks to see if the required tools are installed
 	nmaptool=`which nmap`
 	if [[ "$?" != "0" ]]; then
 		echo -e $lred"Nmap not found need to install..."
@@ -66,6 +70,7 @@ function ncatinstalled()
 
 function changecolour()
 {
+	# Change colour commands that turned this code into "malware"
 	if [[ $message == "!colour" ]]; then
 		echo colors are "red, yellow, green, nc"
 		read -p "What colour: " colourpick
@@ -103,7 +108,7 @@ sleep 2
 while :
 do
 clear
-echo -e $lgreen"Username:" $lred" $chatname" $lgreen""
+echo -e $lgreen"Username:" $lred" $chatname" $lgreen""	# Shows users username
 echo ""
 echo "1) Join session"
 echo ""
@@ -115,11 +120,11 @@ if [[ $menu1 == "1" ]]; then
 	clear
 	echo ""
 	clear
-	read -p "Enter chat ip or domain: " ipordomain
+	read -p "Enter chat ip or domain: " ipordomain	# Sets ip to conect to
 	echo ""
-	read -p "Enter chat port: " port
+	read -p "Enter chat port: " port # Sets port to connect to
 	echo ""
-	read -p "Is this chat room encrypted (y / n): " sslonornot
+	read -p "Is this chat room encrypted (y / n): " sslonornot	#asks if chat room needs to be encrypted
 
 	echo ""
 	echo "Connecting..."
@@ -128,7 +133,7 @@ if [[ $menu1 == "1" ]]; then
 	if [[ $sslonornot == "y" ]]; then
 		while :
 		do
-			echo $chatname Joined the chat $date | ncat $ipordomain $port --ssl
+			echo $chatname Joined the chat $date | ncat $ipordomain $port --ssl	# joins a chatroom with encryption enabled
 			echo $chatname Joined the chat $date
 			echo Type something...
 		
@@ -136,7 +141,7 @@ if [[ $menu1 == "1" ]]; then
 		
 			while true; do
 				read message
-				echo "$chatname: $message"
+				echo "$chatname: $message"	# "Runs Maleware"
 
 				changecolour
 
@@ -146,7 +151,7 @@ if [[ $menu1 == "1" ]]; then
 	elif [[ $sslonornot == "n" ]]; then
 			while :
 		do
-			echo $chatname Joined the chat $date | ncat $ipordomain $port
+			echo $chatname Joined the chat $date | ncat $ipordomain $port # joins a chatroom with encryption enabled
 			echo $chatname Joined the chat $date
 			echo Type something...
 		
@@ -154,7 +159,7 @@ if [[ $menu1 == "1" ]]; then
 		
 			while true; do
 				read message
-				echo "$chatname: $message"
+				echo "$chatname: $message"	# "Runs Maleware"
 
 				changecolour
 
@@ -167,9 +172,9 @@ if [[ $menu1 == "1" ]]; then
 fi
 
 if [[ $menu1 == "2" ]]; then
-	read -p "Enter chatname: " chatname
-	echo $chatname > chatname.txt
-	if [[ $chatname == "" ]]; then
+	read -p "Enter chatname: " chatname	# Changes users name to what they type
+	echo $chatname > chatname.txt	# Saves users name into a txt file called chatname.txt
+	if [[ $chatname == "" ]]; then	# Checks to see if the user put anything as there name and if not sets chatname back to default
 		echo -e $lred"You must have a name..."
 		sleep 2
 		chatname="$USER"
